@@ -9,11 +9,11 @@ export function EducationSection () {
                             <img width="300" height="300" src={`${process.env.PUBLIC_URL}/images/UNC_Chapel_Hill.jpg`} alt="instagram image" />
                         </div>
                     <div>
-                       <p style={{}}>Education:</p>
+                       <p style={{textDecoration: "underline", color: "red" }}>Education:</p>
                   <li style={{}}>Graduated Spring 2022 with a B.S. in Computer Science</li><li style={{}}>Minored in mathematics</li>
                   <li style={{}}>Dean's list: Fall 2018, Spring 2019, Fall 2021, Spring 2022</li>
                  <br/>
-                  <p style={{}}>Skills:</p>
+                  <p style={{textDecoration: "underline", color: "red"}}>Skills:</p>
                   
                   <li style={{}}>Full Stack Application Development which includes the following tech stack: React, Typescript, Express.js, C#/.NET APIs, SQL Server</li>
                   <li style={{}}>Developing and deploying applications in the cloud with AWS</li>
