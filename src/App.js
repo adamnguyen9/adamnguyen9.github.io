@@ -1,9 +1,9 @@
 import './App.css'
-import { Remainder } from './components/remainder'
+import { Content } from './components/content'
 import * as React from 'react'
 
 function App() {
-    return <Remainder />
+    return <Content />
 }
 
 export default App

@@ -1,10 +1,9 @@
 import { Header } from './header'
 import { AboutMeSection } from './aboutMe'
-import { ContactMeSection } from './contactMe'
 import { EducationSection } from './education'
 import { HobbySection } from './hobbies'
 
-export function Remainder() {
+export function Content() {
     return (
         <div className="area">
             <Header />
@@ -23,7 +22,6 @@ export function Remainder() {
             </ul>
             <HobbySection />
             <EducationSection />
-            <ContactMeSection />
         </div>
     )
 }
