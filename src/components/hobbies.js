@@ -8,8 +8,8 @@ export function HobbySection () {
                         <video width="320" height="240" controls>
                              <source src={`${process.env.PUBLIC_URL}/images/running.mp4`} type="video/mp4"></source>
                         </video>
-                        <img src={`${process.env.PUBLIC_URL}/images/sunset.jpg`} width="320" height="240"></img>
-                       <div> <img src={`${process.env.PUBLIC_URL}/images/traveling.jpg`} width="320" height="240"></img></div>
+                        <img src={`${process.env.PUBLIC_URL}/images/sunsets.jpg`} width="320" height="240"></img>
+                       <div> <img src={`${process.env.PUBLIC_URL}/images/travelings.jpg`} width="320" height="240"></img></div>
 
                       </div>          
                 </div>

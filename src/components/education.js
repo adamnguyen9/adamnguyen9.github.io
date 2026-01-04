@@ -5,7 +5,6 @@ export function EducationSection () {
                 <h1 class="title" style={{ textAlign: "center"}}>Education and Skills</h1>
                     <div class="box" style={{background: "none"}}>
                         <div style={{width: "100%"}} >
-                          
                             <img width="300" height="300" src={`${process.env.PUBLIC_URL}/images/UNC_Chapel_Hill.jpg`} alt="instagram image" />
                         </div>
                     <div>
