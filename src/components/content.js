@@ -2,6 +2,7 @@ import { Header } from './header'
 import { AboutMeSection } from './aboutMe'
 import { EducationSection } from './education'
 import { HobbySection } from './hobbies'
+import { ContactMeSection } from './contactMe';
 
 export function Content() {
     return (
@@ -22,6 +23,7 @@ export function Content() {
             </ul>
             <HobbySection />
             <EducationSection />
+            <ContactMeSection />
         </div>
     )
 }
