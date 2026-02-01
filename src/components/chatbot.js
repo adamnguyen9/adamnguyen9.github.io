@@ -17,7 +17,7 @@ export function Chatbot() {
   setInput("");
   setLoading(true);
 
-    const OPENROUTER_API_KEY = ""; 
+    const OPENROUTER_API_KEY = "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"; 
 
   try {
     const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
