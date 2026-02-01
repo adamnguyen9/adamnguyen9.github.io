@@ -1,70 +1,78 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { CreateMLCEngine } from "@mlc-ai/web-llm";
 
 export function Chatbot() {
+    const systemPrompt =
+  `You are Adam, a software engineer. It is Valentine's Day. 
+  The user may be Diana. If the user says her name is Diana,
+   you are speaking directly to your girlfriend. Respond warmly, romantically, and personally.
+    Do not invent professional emails or LinkedIn-style messages unless explicitly asked. Keep replies under 80 words.
+    "You speak in first person and never impersonate the user.`;
 
-  const text = "You are Adam, a software engineer. Your girlfriend is Diana and it's Valentine's Day. Compliment user as much as possible and how lovely they are."
+
   const [messages, setMessages] = useState([
-    { role: "system", content: text }
+    { role: "system", content: systemPrompt },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [ready, setReady] = useState(false);
+
+  const engineRef = useRef(null);
+
+  useEffect(() => {
+    const init = async () => {
+      engineRef.current = await CreateMLCEngine(
+        "Llama-3.2-1B-Instruct-q4f16_1-MLC"
+      );
+
+      setReady(true);
+    };
+
+    init();
+  }, []);
 
   const sendMessage = async () => {
-  if (!input.trim() || loading) return;
+    if (!input.trim() || loading || !ready) return;
 
-  const newMessages = [...messages, { role: "user", content: input }];
-  setMessages(newMessages);
-  setInput("");
-  setLoading(true);
+    const newMessages = [...messages, { role: "user", content: input }];
+    setMessages(newMessages);
+    setInput("");
+    setLoading(true);
 
-    const OPENROUTER_API_KEY = "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"; 
-
-  try {
-    const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
-        "HTTP-Referer": window.location.origin,
-        "X-Title": "React Chatbot",
-      },
-      body: JSON.stringify({
-        model: "openai/gpt-4o-mini",
+    try {
+      const res = await engineRef.current.chat.completions.create({
         messages: newMessages,
-      }),
-    });
+      });
 
-    const data = await res.json();
-
-    setMessages([
-      ...newMessages,
-      {
-        role: "assistant",
-        content: data.choices?.[0]?.message?.content || "No response",
-      },
-    ]);
-  } catch (err) {
-    setMessages([
-      ...newMessages,
-      {
-        role: "assistant",
-        content: "Something went wrong.",
-      },
-    ]);
-  } finally {
-    setLoading(false);
-  }
-};
-
-
+      setMessages([
+        ...newMessages,
+        {
+          role: "assistant",
+          content: res.choices[0].message.content,
+        },
+      ]);
+    } catch (err) {
+      setMessages([
+        ...newMessages,
+        {
+          role: "assistant",
+          content: "Oops — my brain froze for a second 💘",
+        },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div style={styles.page}>
-      <h1 style={styles.title}>Chat with me!</h1>
+      <h1 style={styles.title}>
+        {ready ? "Chat with me!" : "Loading Chatbot… 💎"}
+      </h1>
 
       <div style={styles.chatContainer}>
         {messages
-          .filter(m => m.role !== "system")
+          .filter((m) => m.role !== "system")
           .map((msg, i) => (
             <div
               key={i}
@@ -73,7 +81,7 @@ export function Chatbot() {
                 alignSelf: msg.role === "user" ? "flex-end" : "flex-start",
                 backgroundColor:
                   msg.role === "user" ? "#2563eb" : "#1f2937",
-                color: "white"
+                color: "white",
               }}
             >
               {msg.content}
@@ -81,7 +89,13 @@ export function Chatbot() {
           ))}
 
         {loading && (
-          <div style={{ ...styles.message, alignSelf: "flex-start", opacity: 0.6 }}>
+          <div
+            style={{
+              ...styles.message,
+              alignSelf: "flex-start",
+              opacity: 0.6,
+            }}
+          >
             Adam is typing…
           </div>
         )}
@@ -89,15 +103,16 @@ export function Chatbot() {
 
       <input
         style={styles.input}
-        placeholder="Send a message..."
+        placeholder={ready ? "Send a message..." : "Model loading…"}
         value={input}
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-        disabled={loading}
+        disabled={!ready || loading}
       />
     </div>
   );
 }
+
 
 const styles = {
   page: {
